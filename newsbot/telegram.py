@@ -45,9 +45,10 @@ class Telegram:
         )
         title = html.escape(story.title)
         summary = html.escape(story.summary)
+        classification = "\n".join(html.escape(line) for line in story.classification_lines())
         result = self.call("sendMessage", chat_id=self.chat, parse_mode="HTML",
                            link_preview_options={"is_disabled": True},
-                           text=f"<b>{title}</b>\n\n{summary}\n\nSources · {links}")
+                           text=f"{classification}\n\n📌 <b>{title}</b>\n\n{summary}\n\nSources · {links}")
         if result["chat"]["id"] != self.chat:
             raise ServiceError("Telegram returned a message for an unexpected chat")
         return result["message_id"], dt.datetime.fromtimestamp(result["date"], dt.UTC)

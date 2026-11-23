@@ -10,6 +10,20 @@ The [GitHub Actions publisher](https://github.com/Slava118/crypto_news_service/a
 - Require a score of at least 8/10, two different publishers, and supporting excerpts present in both feeds. Every brief links to both publishers.
 - Skip rumors, routine price moves, sponsored stories, and trading advice. Compare each candidate with publication history by URL and overlapping headline and summary terms. A run with no qualifying story sends nothing.
 
+## Sentiment and impact
+
+Posts use the channel's five-position sentiment bar and a separate impact label. The internal 8/10 cutoff measures editorial importance. A neutral story can qualify.
+
+| Bar | Sentiment | Meaning for the affected asset, protocol, or sector |
+| --- | --- | --- |
+| 🟥⬜⬜⬜⬜ | Strongly negative | Exceptionally severe harm or market decline |
+| ⬜🟧⬜⬜⬜ | Negative | Clear adverse effect |
+| ⬜⬜🟨⬜⬜ | Neutral | Mixed effects or no clear direction supported by the sources |
+| ⬜⬜⬜🟩⬜ | Positive | Clear beneficial effect |
+| ⬜⬜⬜⬜🟦 | Strongly positive | Exceptionally large, corroborated benefit |
+
+**Market Mover · now** indicates a documented immediate market effect. **Long Game · months** marks structural developments. **Background** covers other relevant context. Posts include one or two topic tags. Exceptional price moves and flows can qualify when two sources support them. The publisher uses reported figures and time windows from the feeds. Sentiment describes the reported development and provides no price forecast.
+
 ## Set up Telegram and GitHub
 
 1. In Telegram, add a dedicated bot to the channel as an administrator with **Post messages** permission. Use a new channel or import its public history before publishing, as described below.

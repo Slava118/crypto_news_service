@@ -72,8 +72,9 @@ def run(path, dry_run, reviewed_sources=None):
     logging.info("%d stories passed the editorial and duplicate checks", len(stories))
     if dry_run:
         for story in stories:
-            logging.info("Candidate %d/10: %s | %s | %s", story.score, story.title,
-                         story.summary, " · ".join(article.url for article in story.articles))
+            logging.info("Candidate %d/10: %s | %s | %s | %s", story.score,
+                         " | ".join(story.classification_lines()), story.title, story.summary,
+                         " · ".join(article.url for article in story.articles))
         logging.info("Dry run complete; no Telegram message or history changes")
     else:
         if reviewed_sources:

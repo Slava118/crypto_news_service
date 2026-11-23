@@ -24,9 +24,11 @@ ARTICLES = [
 ]
 ITEM = {"score": 8, "title": "Ethereum activates its latest protocol upgrade",
         "summary": "Ethereum has activated a major upgrade to its protocol.",
+        "sentiment": 4, "impact": "long_game", "topics": ["tech", "adoption"],
         "evidence": [{"article": 0, "quote": "activates a major network upgrade"},
                      {"article": 1, "quote": "rolls out protocol upgrade"}]}
-STORY = Story(8, ITEM["title"], ITEM["summary"], tuple(ARTICLES))
+STORY = Story(8, ITEM["title"], ITEM["summary"], tuple(ARTICLES), 4, "long_game",
+              ("tech", "adoption"))
 OLD = {"id": 50, "day": "2026-11-21", "title": "Previous news",
        "summary": "An earlier report.", "urls": ["https://example.net/precedente"]}
 
@@ -36,6 +38,26 @@ class EditorTests(unittest.TestCase):
         result = {"stories": [dict(ITEM, score=7), ITEM, dict(ITEM, score=9)]}
         accepted = validate(result, ARTICLES, [])
         self.assertEqual([story.score for story in accepted], [9])
+
+    def test_all_sentiment_levels_can_qualify_at_the_same_importance(self):
+        for sentiment, label in enumerate(
+            ["STRONGLY NEGATIVE", "NEGATIVE", "NEUTRAL", "POSITIVE", "STRONGLY POSITIVE"],
+            start=1,
+        ):
+            with self.subTest(sentiment=sentiment):
+                [story] = validate({"stories": [dict(ITEM, sentiment=sentiment)]}, ARTICLES, [])
+                self.assertEqual(story.score, 8)
+                self.assertEqual(story.record(1, "2026-11-22")["sentiment"], sentiment)
+                self.assertEqual(story.classification_lines()[0].split(" ", 2)[2], label)
+
+    def test_rejects_missing_or_invalid_classification(self):
+        missing = dict(ITEM)
+        del missing["sentiment"]
+        invalid = [missing, dict(ITEM, sentiment=0), dict(ITEM, sentiment=6),
+                   dict(ITEM, sentiment=True), dict(ITEM, impact="urgent"),
+                   dict(ITEM, topics=[]), dict(ITEM, topics=["fake"]),
+                   dict(ITEM, topics=["tech", "tech"])]
+        self.assertEqual(validate({"stories": invalid}, ARTICLES, []), [])
 
     def test_rejects_unknown_fabricated_or_single_publisher_evidence(self):
         invalid = [dict(ITEM, evidence=[ITEM["evidence"][0], extra]) for extra in (
@@ -284,6 +306,19 @@ class PublisherTests(unittest.TestCase):
             telegram.check()
         self.assertEqual(telegram.chat, -10042)
         self.assertIsNone(telegram.username)
+
+    def test_telegram_renders_classification_and_both_sources(self):
+        telegram = Telegram("placeholder", "-10042")
+        telegram.chat = -10042
+        result = {"chat": {"id": -10042}, "message_id": 51, "date": int(NOW.timestamp())}
+        with patch.object(telegram, "call", return_value=result) as send:
+            self.assertEqual(telegram.send(STORY), (51, NOW))
+        self.assertEqual(send.call_args.args, ("sendMessage",))
+        text = send.call_args.kwargs["text"]
+        self.assertTrue(text.startswith("🎯 ⬜⬜⬜🟩⬜ POSITIVE\n🔵 LONG GAME · 🕰 months\n"))
+        self.assertIn("#tech #adoption\n\n📌 <b>Ethereum", text)
+        for article in ARTICLES:
+            self.assertIn(f'<a href="{article.url}">{article.publisher}</a>', text)
 
 
 if __name__ == "__main__":
