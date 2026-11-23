@@ -22,7 +22,7 @@ Posts use the channel's five-position sentiment bar and a separate impact label.
 | ⬜⬜⬜🟩⬜ | Positive | Clear beneficial effect |
 | ⬜⬜⬜⬜🟦 | Strongly positive | Exceptionally large, corroborated benefit |
 
-**Market Mover · now** indicates a documented immediate market effect. **Long Game · months** marks structural developments. **Background** covers other relevant context. Posts include one or two topic tags. Exceptional price moves and flows can qualify when two sources support them. The publisher uses reported figures and time windows from the feeds. Sentiment describes the reported development and provides no price forecast.
+**Market Mover · now** indicates a documented immediate market effect. **Long Game · months** marks structural developments. **Background** covers other relevant context. Posts include one or two topic tags. Exceptional price moves and flows can qualify when two sources support them. Numeric figures in the headline and summary must appear in both feed excerpts. Sentiment describes the reported development and provides no price forecast.
 
 ## Set up Telegram and GitHub
 

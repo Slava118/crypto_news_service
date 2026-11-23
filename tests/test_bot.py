@@ -59,6 +59,23 @@ class EditorTests(unittest.TestCase):
                    dict(ITEM, topics=["tech", "tech"])]
         self.assertEqual(validate({"stories": invalid}, ARTICLES, []), [])
 
+    def test_figures_require_both_feeds_and_allow_equivalent_notation(self):
+        sources = [
+            Article("Publisher A", ARTICLES[0].title, "Bitcoin rallied above $61K after falling 7%.",
+                    ARTICLES[0].url, NOW.isoformat()),
+            Article("Publisher B", ARTICLES[1].title, "The rebound took bitcoin to $61,000.",
+                    ARTICLES[1].url, NOW.isoformat()),
+        ]
+        story = dict(ITEM, title="Bitcoin rebounds to $61,000",
+                     summary="Bitcoin recovered to $61K after a decline.",
+                     evidence=[{"article": 0, "quote": "bitcoin rallied above $61k"},
+                               {"article": 1, "quote": "the rebound took bitcoin to $61,000"}])
+        self.assertEqual(len(validate({"stories": [story]}, sources, [])), 1)
+        for number in ("7%", "$55,500", "61,000%"):
+            with self.subTest(number=number):
+                unsupported = dict(story, summary=f"Bitcoin recovered after a decline of {number}.")
+                self.assertEqual(validate({"stories": [unsupported]}, sources, []), [])
+
     def test_rejects_unknown_fabricated_or_single_publisher_evidence(self):
         invalid = [dict(ITEM, evidence=[ITEM["evidence"][0], extra]) for extra in (
             {"article": 4, "quote": "rolls out protocol upgrade"},

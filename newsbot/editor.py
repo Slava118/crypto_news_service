@@ -4,6 +4,7 @@ import re
 import time
 import unicodedata
 from dataclasses import asdict, dataclass
+from decimal import Decimal
 from itertools import combinations
 
 from .feeds import Article, canonical_url
@@ -38,6 +39,19 @@ TOPIC_LABELS = {
     "tech": "🛠 Tech",
     "tokenizedstocks": "🏦 Tokenized Stocks",
 }
+FIGURE = re.compile(
+    r"(?<![\w.])(?P<sign>[-−+])?(?P<currency>[$€£])?\s*"
+    r"(?P<number>[0-9]+(?:,[0-9]{3})*(?:\.[0-9]+)?)"
+    r"(?:\s*(?P<scale>trillion|billion|million|thousand|[kmbt])(?!\w))?"
+    r"(?:\s*(?P<percent>%|percent\b))?(?!\w)",
+    re.IGNORECASE,
+)
+FIGURE_SCALES = {
+    "k": 1_000, "thousand": 1_000,
+    "m": 1_000_000, "million": 1_000_000,
+    "b": 1_000_000_000, "billion": 1_000_000_000,
+    "t": 1_000_000_000_000, "trillion": 1_000_000_000_000,
+}
 ENGLISH_STOP_WORDS = frozenset("""
     about after against also and are been before being both but can could did does for from had
     has have into its may more most new one only other out over said says than that the their them
@@ -51,7 +65,8 @@ and other widely used networks, major protocol changes and outages, material sec
 stablecoins, significant enforcement and regulation, and major institutional developments.
 Include exceptional reported market moves, derivatives events, fund flows, and on-chain developments
 when the news is material and corroborated. Include figures, their time window, and market or asset
-context only when both sources support them. A wallet transfer alone does not establish buying or selling.
+context only when both sources support them. Omit a figure that appears in only one source and retain
+the shared central fact. A wallet transfer alone does not establish buying or selling.
 Score importance independently of direction: 8 for a significant verified event, 9 for broad or urgent
 impact, and 10 for an exceptional event. Skip rumors, predictions, routine price movements, minor
 token listings, sponsored coverage, and trading advice.
@@ -61,7 +76,7 @@ Set sentiment for the main affected crypto asset, protocol, or sector, using the
 5 strongly positive (exceptionally large and corroborated benefit). Sentiment is not a price forecast.
 Base it on the new development in the headline, rather than longer-term performance alone.
 Set impact to market_mover for an immediate, reported effect on prices, liquidity, or market functioning;
-long_game for a structural development whose main consequences unfold over months; or background for
+long_game for a structural development with documented longer-term consequences; or background for
 context with no demonstrated immediate market effect or clear longer-term structural change.
 Choose one or two distinct topics from the allowed schema values, with the main topic first.
 Publish only a central fact corroborated by two independent publishers. A shared wire story,
@@ -140,6 +155,16 @@ def similarity(first, second):
     return len(first & second) / max(1, len(first | second))
 
 
+def reported_figures(text):
+    return {
+        (match["currency"], bool(match["percent"]),
+         Decimal(match["number"].replace(",", ""))
+         * FIGURE_SCALES.get((match["scale"] or "").lower(), 1)
+         * (-1 if match["sign"] in ("-", "−") else 1))
+        for match in FIGURE.finditer(text)
+    }
+
+
 def shared_terms(first, second, minimum):
     first = words(first) - ENGLISH_STOP_WORDS
     second = words(second) - ENGLISH_STOP_WORDS
@@ -184,6 +209,10 @@ def validate(result, articles, posts):
             if (selected[0].publisher == selected[1].publisher
                     or canonical_url(selected[0].url) == canonical_url(selected[1].url)
                     or similarity(selected[0].description, selected[1].description) >= 0.8):
+                continue
+            figures = reported_figures(f"{title}\n{summary}")
+            if any(figures - reported_figures(f"{article.title}\n{article.description}")
+                   for article in selected):
                 continue
             for article, entry in zip(selected, evidence, strict=True):
                 quote = " ".join(entry["quote"].casefold().split())
