@@ -1,0 +1,59 @@
+name: Telegram news publisher
+
+on:
+  schedule:
+    - cron: '37 * * * *'
+  workflow_dispatch:
+    inputs:
+      reviewed_sources:
+        description: 'Optional. Two reviewed source URLs separated by a space. Leave blank for dry run.'
+        required: false
+        type: string
+
+concurrency:
+  group: telegram-publication
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    if: github.ref == 'refs/heads/main' && (vars.PUBLISH_ENABLED == 'true' || (github.event_name == 'workflow_dispatch' && inputs.reviewed_sources == ''))
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          persist-credentials: false
+      - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5
+        with:
+          ref: publication-state
+          path: .publication
+          persist-credentials: ${{ vars.PUBLISH_ENABLED == 'true' && (github.event_name == 'schedule' || inputs.reviewed_sources != '') }}
+      - uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.13'
+      - name: Test publishing safeguards
+        run: python -m unittest discover -s tests -v
+      - name: Configure history commit identity
+        working-directory: .publication
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+      - name: Run publisher
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL }}
+          EVENT_NAME: ${{ github.event_name }}
+          REVIEWED_SOURCES: ${{ inputs.reviewed_sources }}
+        run: |
+          if [[ "$EVENT_NAME" == schedule ]]; then
+            python -m newsbot --publish
+          elif [[ -n "$REVIEWED_SOURCES" ]]; then
+            python -m newsbot --publish --reviewed-sources "$REVIEWED_SOURCES"
+          else
+            python -m newsbot --dry-run
+          fi
