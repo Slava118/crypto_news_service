@@ -1,24 +1,7 @@
 {
   "version": 1,
   "chat_id": -1003368759312,
-  "pending": {
-    "id": 0,
-    "day": "2026-11-24",
-    "title": "CFTC Staff Issues Guidance Allowing Exchanges to Count Crypto Toward Operating Reserves",
-    "summary": "Staff at the U.S. CFTC have issued new advisory guidance stating that regulated derivatives firms and exchanges may count major crypto assets, specifically Bitcoin, Ether, and payment stablecoins, toward meeting operating reserve requirements.",
-    "score": 8,
-    "sentiment": 4,
-    "impact": "long_game",
-    "topics": [
-      "regulation",
-      "derivatives"
-    ],
-    "urls": [
-      "https://cointelegraph.com/news/cftc-staff-say-exchanges-can-count-bitcoin-toward-operating-reserves",
-      "https://theblock.co/news/regulation/2026-11-23-cftc-staff-bitcoin-ether-count-toward-derivatives-firms-operating-expenses-445435"
-    ],
-    "reserved_at": "2026-11-24T05:14:28.166633+00:00"
-  },
+  "pending": null,
   "posts": [
     {
       "id": 1,
@@ -3948,6 +3931,23 @@
       "title": "",
       "summary": "",
       "urls": []
+    },
+    {
+      "id": 539,
+      "day": "2026-11-24",
+      "title": "CFTC Staff Issues Guidance Allowing Exchanges to Count Crypto Toward Operating Reserves",
+      "summary": "Staff at the U.S. CFTC have issued new advisory guidance stating that regulated derivatives firms and exchanges may count major crypto assets, specifically Bitcoin, Ether, and payment stablecoins, toward meeting operating reserve requirements.",
+      "score": 8,
+      "sentiment": 4,
+      "impact": "long_game",
+      "topics": [
+        "regulation",
+        "derivatives"
+      ],
+      "urls": [
+        "https://cointelegraph.com/news/cftc-staff-say-exchanges-can-count-bitcoin-toward-operating-reserves",
+        "https://theblock.co/news/regulation/2026-11-23-cftc-staff-bitcoin-ether-count-toward-derivatives-firms-operating-expenses-445435"
+      ]
     }
   ]
 }
