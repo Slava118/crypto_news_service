@@ -1,7 +1,24 @@
 {
   "version": 1,
   "chat_id": -1003368759312,
-  "pending": null,
+  "pending": {
+    "id": 0,
+    "day": "2026-11-25",
+    "title": "Utah Moves to Dismiss Criminal Charges Against Kalshi Following Operations Halt",
+    "summary": "Utah's attorney general office filed motions to dismiss criminal charges against prediction market Kalshi after the firm halted services in the state. However, state authorities cautioned that criminal accusations regarding gambling laws could be refiled if the platform resumes operations, leaving broader legal questions unresolved.",
+    "score": 8,
+    "sentiment": 3,
+    "impact": "long_game",
+    "topics": [
+      "regulation",
+      "geopolitics"
+    ],
+    "urls": [
+      "https://coindesk.com/policy/2026/11/24/utah-moves-to-drop-criminal-pursuit-of-kalshi-after-the-firm-halted-services-there",
+      "https://cointelegraph.com/news/utah-moves-to-dismiss-criminal-charges-against-kalshi-after-trading-halt"
+    ],
+    "reserved_at": "2026-11-25T10:48:56.814465+00:00"
+  },
   "posts": [
     {
       "id": 1,
