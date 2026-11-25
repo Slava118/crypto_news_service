@@ -1,24 +1,7 @@
 {
   "version": 1,
   "chat_id": -1003368759312,
-  "pending": {
-    "id": 0,
-    "day": "2026-11-25",
-    "title": "South Korea Proposes Ending 2017 ICO Ban to Boost Onshore Crypto Investment",
-    "summary": "South Korea's Financial Services Commission proposed lifting the country's 2017 initial coin offering ban through a new Digital Asset Act. The rules would allow domestic token issuers to raise capital locally under strict IPO-style disclosure requirements.",
-    "score": 8,
-    "sentiment": 4,
-    "impact": "long_game",
-    "topics": [
-      "regulation",
-      "adoption"
-    ],
-    "urls": [
-      "https://coindesk.com/policy/2026/11/24/south-korea-proposes-ending-2017-ico-ban-to-boost-jobs-and-onshore-crypto-investment",
-      "https://decrypt.co/383905/south-korea-moves-lift-ico-ban-after-nearly-decade"
-    ],
-    "reserved_at": "2026-11-25T01:15:58.316705+00:00"
-  },
+  "pending": null,
   "posts": [
     {
       "id": 1,
@@ -3964,6 +3947,23 @@
       "urls": [
         "https://cointelegraph.com/news/cftc-staff-say-exchanges-can-count-bitcoin-toward-operating-reserves",
         "https://theblock.co/news/regulation/2026-11-23-cftc-staff-bitcoin-ether-count-toward-derivatives-firms-operating-expenses-445435"
+      ]
+    },
+    {
+      "id": 540,
+      "day": "2026-11-25",
+      "title": "South Korea Proposes Ending 2017 ICO Ban to Boost Onshore Crypto Investment",
+      "summary": "South Korea's Financial Services Commission proposed lifting the country's 2017 initial coin offering ban through a new Digital Asset Act. The rules would allow domestic token issuers to raise capital locally under strict IPO-style disclosure requirements.",
+      "score": 8,
+      "sentiment": 4,
+      "impact": "long_game",
+      "topics": [
+        "regulation",
+        "adoption"
+      ],
+      "urls": [
+        "https://coindesk.com/policy/2026/11/24/south-korea-proposes-ending-2017-ico-ban-to-boost-jobs-and-onshore-crypto-investment",
+        "https://decrypt.co/383905/south-korea-moves-lift-ico-ban-after-nearly-decade"
       ]
     }
   ]
