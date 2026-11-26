@@ -1,7 +1,24 @@
 {
   "version": 1,
   "chat_id": -1003368759312,
-  "pending": null,
+  "pending": {
+    "id": 0,
+    "day": "2026-11-26",
+    "title": "Standard Chartered's Zodia Custody Suffers Data Breach Exposing Client Contacts",
+    "summary": "Standard Chartered's crypto custodian Zodia Custody experienced a data breach that exposed client and employee names and email addresses. The company confirmed that no unauthorized transactions or breaches of customer funds took place following the incident.",
+    "score": 8,
+    "sentiment": 2,
+    "impact": "long_game",
+    "topics": [
+      "security",
+      "corporate"
+    ],
+    "urls": [
+      "https://coindesk.com/tech/2026/11/26/standard-chartered-s-zodia-custody-suffers-data-breach-exposing-client-information",
+      "https://cointelegraph.com/news/standard-chartered-zodia-suffers-data-breach"
+    ],
+    "reserved_at": "2026-11-26T13:29:31.803204+00:00"
+  },
   "posts": [
     {
       "id": 1,
