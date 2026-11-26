@@ -1,7 +1,24 @@
 {
   "version": 1,
   "chat_id": -1003368759312,
-  "pending": null,
+  "pending": {
+    "id": 0,
+    "day": "2026-11-26",
+    "title": "Braiins Warns of Hashrate Hijacking Attacks Hitting Over 1,000 Bitcoin Mining Sites",
+    "summary": "Bitcoin mining pool operator Braiins has warned that attackers are exploiting unencrypted Stratum V1 connections and internet route hijacking to impersonate mining pools, impacting over 1,000 sites by redirecting computing power and potentially stealing rewards.",
+    "score": 8,
+    "sentiment": 2,
+    "impact": "long_game",
+    "topics": [
+      "security",
+      "onchain"
+    ],
+    "urls": [
+      "https://cointelegraph.com/news/braiins-warns-bitcoin-mining-attacks-affecting-1000-sites",
+      "https://decrypt.co/383999/another-bitcoin-mining-firm-hashrate-hijacking-attacks"
+    ],
+    "reserved_at": "2026-11-26T03:21:29.712146+00:00"
+  },
   "posts": [
     {
       "id": 1,
