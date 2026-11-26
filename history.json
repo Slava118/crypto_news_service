@@ -1,7 +1,23 @@
 {
   "version": 1,
   "chat_id": -1003368759312,
-  "pending": null,
+  "pending": {
+    "id": 0,
+    "day": "2026-11-27",
+    "title": "Spain Empowers Financial Intelligence Unit to Freeze Crypto Accounts Without Court Orders",
+    "summary": "Spain's financial intelligence unit, Sepblac, has gained the authority to freeze crypto, bank, and payment accounts for up to five working days without requiring a prior court order. Under the new decree, firms operating in the country face penalties for noncompliance, expanding regulatory enforcement powers beyond previous limitations where such suspensions required foreign requests.",
+    "score": 8,
+    "sentiment": 2,
+    "impact": "long_game",
+    "topics": [
+      "regulation"
+    ],
+    "urls": [
+      "https://coindesk.com/business/2026/11/26/spain-gives-anti-laundering-unit-power-to-freeze-crypto-accounts-without-a-judge",
+      "https://decrypt.co/384063/spain-lets-its-financial-intelligence-unit-freeze-crypto-accounts-without-a-court-order"
+    ],
+    "reserved_at": "2026-11-26T22:46:09.239792+00:00"
+  },
   "posts": [
     {
       "id": 1,
