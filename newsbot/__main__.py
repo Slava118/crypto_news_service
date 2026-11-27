@@ -10,6 +10,9 @@ from .http import ServiceError
 from .telegram import Telegram
 
 
+POSTS_PER_RUN = 2
+
+
 def required(name):
     value = os.environ.get(name, "").strip()
     if not value:
@@ -26,8 +29,8 @@ def daily_count(state, timestamp):
     return sum(post["day"] == day for post in state["posts"])
 
 
-def publish(path, state, story, telegram):
-    verify_channel_head(state, telegram)
+def publish(path, state, story, telegram, previous_send=None):
+    verify_channel_head(state, telegram, previous_send=previous_send)
     timestamp = now()
     if daily_count(state, timestamp) >= DAILY_LIMIT:
         logging.info("Moscow daily publication cap reached")
@@ -45,6 +48,7 @@ def publish(path, state, story, telegram):
     state["pending"] = None
     persist(path, state, f"Record Telegram publication {message_id}")
     logging.info("Published Telegram message %d at %s", message_id, sent.isoformat())
+    return message_id
 
 
 def run(path, dry_run, reviewed_sources=None):
@@ -82,8 +86,14 @@ def run(path, dry_run, reviewed_sources=None):
                        {canonical_url(article.url) for article in story.articles} == reviewed_sources]
             if not stories:
                 logging.info("Reviewed source pair did not qualify in this run; no message sent")
-        if stories:
-            publish(path, state, stories[0], telegram)
+            else:
+                publish(path, state, stories[0], telegram)
+            return
+        previous_send = None
+        for story in stories[:min(remaining, POSTS_PER_RUN)]:
+            previous_send = publish(path, state, story, telegram, previous_send=previous_send)
+            if previous_send is None:
+                break
 
 
 def main():

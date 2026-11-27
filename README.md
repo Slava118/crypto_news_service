@@ -2,7 +2,7 @@
 
 A Python service that publishes short English-language crypto briefs to Telegram. It covers major network upgrades and outages, material security incidents, stablecoins, regulation, and institutional developments.
 
-The [GitHub Actions publisher](https://github.com/Slava118/crypto_news_service/actions/workflows/news.yml) checks feeds at minute 57 of each hour. It sends at most one story per run and five per calendar day in `Europe/Moscow`. GitHub can delay or skip scheduled runs.
+The [GitHub Actions publisher](https://github.com/Slava118/crypto_news_service/actions/workflows/news.yml) checks feeds at minute 57 of each hour. Each scheduled run can send up to two stories, with a cap of five per calendar day in `Europe/Moscow`. GitHub can delay or skip scheduled runs.
 
 ## Editorial rules
 

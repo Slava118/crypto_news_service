@@ -2,6 +2,7 @@ import datetime as dt
 import json
 import re
 import subprocess
+import time
 from html.parser import HTMLParser
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -83,15 +84,27 @@ def import_history(telegram):
         before = oldest
 
 
-def verify_channel_head(state, telegram):
+def verify_channel_head(state, telegram, previous_send=None):
     if state["chat_id"] is not None and state["chat_id"] != telegram.chat:
         raise ServiceError("Publication history belongs to a different Telegram channel")
     if not telegram.username:
         return
-    public = {post["id"] for post in preview(telegram.username)}
     known = {post["id"] for post in state["posts"]}
-    if max(public, default=0) != max(known, default=0) or public - known:
-        raise ServiceError("Telegram preview and publication history disagree; reconcile before sending")
+    latest = max(known, default=0)
+    previous_head = max(known - {previous_send}, default=0)
+    delays = (0, 3, 7, 15) if previous_send == latest else (0,)
+    for delay in delays:
+        if delay:
+            time.sleep(delay)
+        public = {post["id"] for post in preview(telegram.username)}
+        public_head = max(public, default=0)
+        if public - known:
+            break
+        if public_head == latest:
+            return
+        if public_head != previous_head:
+            break
+    raise ServiceError("Telegram preview and publication history disagree; reconcile before sending")
 
 
 def load_state(path):

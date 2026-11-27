@@ -2,6 +2,7 @@ import datetime as dt
 import json
 import tempfile
 import unittest
+from dataclasses import replace
 from pathlib import Path
 from unittest.mock import Mock, patch
 
@@ -180,6 +181,24 @@ class FeedAndHistoryTests(unittest.TestCase):
                 verify_channel_head({"chat_id": -10042, "posts": [OLD]},
                                     Mock(chat=-10042, username="cryptonews_example"))
 
+    def test_preview_can_catch_up_to_post_sent_in_same_run(self):
+        next_post = dict(OLD, id=51)
+        state = {"chat_id": -10042, "posts": [OLD, next_post]}
+        target = Mock(chat=-10042, username="cryptonews_example")
+        with (patch("newsbot.history.preview", side_effect=[[OLD], [OLD, next_post]]),
+              patch("newsbot.history.time.sleep") as sleep):
+            verify_channel_head(state, target, previous_send=51)
+        sleep.assert_called_once_with(3)
+
+    def test_preview_retry_stops_on_unknown_post(self):
+        state = {"chat_id": -10042, "posts": [OLD, dict(OLD, id=51)]}
+        target = Mock(chat=-10042, username="cryptonews_example")
+        with (patch("newsbot.history.preview", return_value=[OLD, dict(OLD, id=52)]),
+              patch("newsbot.history.time.sleep") as sleep):
+            with self.assertRaisesRegex(ServiceError, "disagree"):
+                verify_channel_head(state, target, previous_send=51)
+        sleep.assert_not_called()
+
     def test_empty_public_channel_can_start_and_rejects_unrecorded_posts(self):
         target = Mock(chat=-10042, username="cryptonews_example")
         state = {"chat_id": None, "posts": []}
@@ -285,6 +304,40 @@ class PublisherTests(unittest.TestCase):
         telegram.return_value.send.assert_not_called()
         publish_mock.assert_not_called()
         evaluate.assert_called_once()
+
+    @patch("newsbot.__main__.required", return_value="placeholder")
+    @patch("newsbot.__main__.now", return_value=NOW)
+    @patch("newsbot.__main__.verify_channel_head")
+    @patch("newsbot.__main__.collect", return_value=ARTICLES)
+    @patch("newsbot.__main__.evaluate")
+    @patch("newsbot.__main__.Telegram")
+    @patch("newsbot.__main__.persist")
+    def test_automatic_run_sends_up_to_two_within_daily_cap(
+        self, save, telegram_class, editor, collect, head, clock, key
+    ):
+        stories = [STORY, replace(STORY, title="Second story"), replace(STORY, title="Third story")]
+        editor.return_value = stories
+        telegram = telegram_class.return_value
+        telegram.chat = -10042
+        for already_sent, expected in [(0, 2), (4, 1)]:
+            with self.subTest(already_sent=already_sent):
+                state = dict(self.state, posts=[
+                    dict(OLD, day=publication_day(NOW), id=index + 1)
+                    for index in range(already_sent)
+                ])
+                telegram.send.reset_mock()
+                telegram.send.side_effect = [(51, NOW), (52, NOW)]
+                save.reset_mock()
+                head.reset_mock()
+                with patch("newsbot.__main__.load_state", return_value=state):
+                    run("some-path", dry_run=False)
+                self.assertEqual([call.args[0] for call in telegram.send.call_args_list],
+                                 stories[:expected])
+                self.assertEqual(save.call_count, 2 * expected)
+                self.assertIsNone(state["pending"])
+                self.assertEqual(daily_count(state, NOW), already_sent + expected)
+                if expected == 2:
+                    self.assertEqual(head.call_args.kwargs, {"previous_send": 51})
 
     @patch("newsbot.__main__.required", return_value="placeholder")
     @patch("newsbot.__main__.verify_channel_head")
