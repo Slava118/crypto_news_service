@@ -1,7 +1,24 @@
 {
   "version": 1,
   "chat_id": -1003368759312,
-  "pending": null,
+  "pending": {
+    "id": 0,
+    "day": "2026-11-27",
+    "title": "Zcash Developers Urge Faster Deprecation of Legacy Shielded Pool Over AI Risks",
+    "summary": "Zcash developers are urging users to move funds out of the older Sapling privacy system sooner, citing potential risks from speculative AI-assisted mathematical breakthroughs. Zakura wants to disable new deposits into the legacy shielded pool as a precaution against future cryptographic attacks.",
+    "score": 8,
+    "sentiment": 2,
+    "impact": "long_game",
+    "topics": [
+      "regulation",
+      "security"
+    ],
+    "urls": [
+      "https://coindesk.com/tech/2026/11/26/zcash-developers-want-users-to-move-usd300-million-out-of-an-older-privacy-system",
+      "https://theblock.co/news/ecosystems/2026-11-26-the-time-to-prepare-for-a-cryptographic-breakthrough-is-before-it-happens-zcash-team-urges-faster-deprecation-of-legacy-shielded-pool-447000"
+    ],
+    "reserved_at": "2026-11-27T04:44:01.192102+00:00"
+  },
   "posts": [
     {
       "id": 1,
