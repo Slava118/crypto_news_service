@@ -1,24 +1,7 @@
 {
   "version": 1,
   "chat_id": -1003368759312,
-  "pending": {
-    "id": 0,
-    "day": "2026-11-27",
-    "title": "Binance Fully Lifts Withdrawal Suspensions Four Weeks After Major Hack",
-    "summary": "Binance announced that customer withdrawals are fully restored across its main platform four weeks following October's major hack, as US authorities report freezing and recovering related funds.",
-    "score": 9,
-    "sentiment": 4,
-    "impact": "market_mover",
-    "topics": [
-      "security",
-      "corporate"
-    ],
-    "urls": [
-      "https://coindesk.com/markets/2026/11/27/binance-says-its-withdrawal-suspension-is-over-four-weeks-after-a-usd6-3-billion-hack",
-      "https://decrypt.co/384121/binance-fully-lifts-withdrawal-suspension-four-weeks-after-6-4b-hack"
-    ],
-    "reserved_at": "2026-11-27T14:38:30.291296+00:00"
-  },
+  "pending": null,
   "posts": [
     {
       "id": 1,
@@ -4065,6 +4048,23 @@
       "urls": [
         "https://coindesk.com/tech/2026/11/26/zcash-developers-want-users-to-move-usd300-million-out-of-an-older-privacy-system",
         "https://theblock.co/news/ecosystems/2026-11-26-the-time-to-prepare-for-a-cryptographic-breakthrough-is-before-it-happens-zcash-team-urges-faster-deprecation-of-legacy-shielded-pool-447000"
+      ]
+    },
+    {
+      "id": 546,
+      "day": "2026-11-27",
+      "title": "Binance Fully Lifts Withdrawal Suspensions Four Weeks After Major Hack",
+      "summary": "Binance announced that customer withdrawals are fully restored across its main platform four weeks following October's major hack, as US authorities report freezing and recovering related funds.",
+      "score": 9,
+      "sentiment": 4,
+      "impact": "market_mover",
+      "topics": [
+        "security",
+        "corporate"
+      ],
+      "urls": [
+        "https://coindesk.com/markets/2026/11/27/binance-says-its-withdrawal-suspension-is-over-four-weeks-after-a-usd6-3-billion-hack",
+        "https://decrypt.co/384121/binance-fully-lifts-withdrawal-suspension-four-weeks-after-6-4b-hack"
       ]
     }
   ]
