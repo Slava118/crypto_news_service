@@ -1,7 +1,24 @@
 {
   "version": 1,
   "chat_id": -1003368759312,
-  "pending": null,
+  "pending": {
+    "id": 0,
+    "day": "2026-11-28",
+    "title": "Brazil's B3 Stock Exchange Teams Up With Major Banks to Launch Real-Pegged Stablecoin",
+    "summary": "Brazil’s stock exchange, B3, is partnering with major financial institutions to launch a real-pegged stablecoin. Banco B3 will issue the token backed one-to-one by Brazilian reais, with other financial institutions able to join from launch.",
+    "score": 8,
+    "sentiment": 4,
+    "impact": "long_game",
+    "topics": [
+      "adoption",
+      "stablecoins"
+    ],
+    "urls": [
+      "https://coindesk.com/business/2026/11/27/brazil-s-stock-exchange-teams-up-with-major-banks-to-launch-real-pegged-stablecoin",
+      "https://cointelegraph.com/news/brazil-b3-stablecoin-tokenization-launch-2027"
+    ],
+    "reserved_at": "2026-11-28T05:58:30.752969+00:00"
+  },
   "posts": [
     {
       "id": 1,
