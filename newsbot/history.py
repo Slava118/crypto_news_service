@@ -85,14 +85,15 @@ def import_history(telegram):
 
 
 def verify_channel_head(state, telegram, previous_send=None):
+    """Return False when the public preview still trails a send from this run."""
     if state["chat_id"] is not None and state["chat_id"] != telegram.chat:
         raise ServiceError("Publication history belongs to a different Telegram channel")
     if not telegram.username:
-        return
+        return True
     known = {post["id"] for post in state["posts"]}
     latest = max(known, default=0)
     previous_head = max(known - {previous_send}, default=0)
-    delays = (0, 3, 7, 15) if previous_send == latest else (0,)
+    delays = (0, 3, 7, 15, 30) if previous_send == latest else (0,)
     for delay in delays:
         if delay:
             time.sleep(delay)
@@ -101,9 +102,11 @@ def verify_channel_head(state, telegram, previous_send=None):
         if public - known:
             break
         if public_head == latest:
-            return
-        if public_head != previous_head:
+            return True
+        if previous_send != latest or public_head != previous_head:
             break
+    else:
+        return False
     raise ServiceError("Telegram preview and publication history disagree; reconcile before sending")
 
 

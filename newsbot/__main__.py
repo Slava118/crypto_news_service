@@ -30,7 +30,10 @@ def daily_count(state, timestamp):
 
 
 def publish(path, state, story, telegram, previous_send=None):
-    verify_channel_head(state, telegram, previous_send=previous_send)
+    if not verify_channel_head(state, telegram, previous_send=previous_send):
+        logging.warning("Telegram preview is still catching up to message %d; deferring the next story",
+                        previous_send)
+        return
     timestamp = now()
     if daily_count(state, timestamp) >= DAILY_LIMIT:
         logging.info("Moscow daily publication cap reached")

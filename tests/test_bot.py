@@ -187,8 +187,18 @@ class FeedAndHistoryTests(unittest.TestCase):
         target = Mock(chat=-10042, username="cryptonews_example")
         with (patch("newsbot.history.preview", side_effect=[[OLD], [OLD, next_post]]),
               patch("newsbot.history.time.sleep") as sleep):
-            verify_channel_head(state, target, previous_send=51)
+            self.assertTrue(verify_channel_head(state, target, previous_send=51))
         sleep.assert_called_once_with(3)
+
+    def test_preview_can_defer_when_it_still_shows_the_previous_post(self):
+        state = {"chat_id": -10042, "posts": [OLD, dict(OLD, id=51)]}
+        target = Mock(chat=-10042, username="cryptonews_example")
+        with (patch("newsbot.history.preview", return_value=[OLD]),
+              patch("newsbot.history.time.sleep") as sleep):
+            self.assertFalse(verify_channel_head(state, target, previous_send=51))
+            with self.assertRaisesRegex(ServiceError, "disagree"):
+                verify_channel_head(state, target)
+        self.assertEqual(sum(call.args[0] for call in sleep.call_args_list), 55)
 
     def test_preview_retry_stops_on_unknown_post(self):
         state = {"chat_id": -10042, "posts": [OLD, dict(OLD, id=51)]}
@@ -319,8 +329,8 @@ class PublisherTests(unittest.TestCase):
         editor.return_value = stories
         telegram = telegram_class.return_value
         telegram.chat = -10042
-        for already_sent, expected in [(0, 2), (4, 1)]:
-            with self.subTest(already_sent=already_sent):
+        for already_sent, preview_current, expected in [(0, True, 2), (4, True, 1), (0, False, 1)]:
+            with self.subTest(already_sent=already_sent, preview_current=preview_current):
                 state = dict(self.state, posts=[
                     dict(OLD, day=publication_day(NOW), id=index + 1)
                     for index in range(already_sent)
@@ -329,6 +339,7 @@ class PublisherTests(unittest.TestCase):
                 telegram.send.side_effect = [(51, NOW), (52, NOW)]
                 save.reset_mock()
                 head.reset_mock()
+                head.side_effect = [True, True, preview_current]
                 with patch("newsbot.__main__.load_state", return_value=state):
                     run("some-path", dry_run=False)
                 self.assertEqual([call.args[0] for call in telegram.send.call_args_list],
