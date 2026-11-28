@@ -1,24 +1,7 @@
 {
   "version": 1,
   "chat_id": -1003368759312,
-  "pending": {
-    "id": 0,
-    "day": "2026-11-28",
-    "title": "Ethereum Core Developers Schedule Delayed Glamsterdam Testnet Upgrade for Dec. 15",
-    "summary": "Ethereum core developers have rescheduled the delayed Glamsterdam testnet upgrade for the Hoodi testnet on December 15. Developers plan to ship the contested gas changes unaltered after security concerns previously halted the Hoodi fork in October.",
-    "score": 8,
-    "sentiment": 3,
-    "impact": "long_game",
-    "topics": [
-      "tech",
-      "regulation"
-    ],
-    "urls": [
-      "https://decrypt.co/384104/ethereum-sets-december-15-date-for-delayed-glamsterdam-testnet-upgrade",
-      "https://theblock.co/news/ecosystems/2026-11-27-ethereum-devs-schedule-glamsterdam-upgrade-hoodi-447051"
-    ],
-    "reserved_at": "2026-11-28T15:56:18.863001+00:00"
-  },
+  "pending": null,
   "posts": [
     {
       "id": 1,
@@ -4099,6 +4082,23 @@
       "urls": [
         "https://coindesk.com/business/2026/11/27/brazil-s-stock-exchange-teams-up-with-major-banks-to-launch-real-pegged-stablecoin",
         "https://cointelegraph.com/news/brazil-b3-stablecoin-tokenization-launch-2027"
+      ]
+    },
+    {
+      "id": 548,
+      "day": "2026-11-28",
+      "title": "Ethereum Core Developers Schedule Delayed Glamsterdam Testnet Upgrade for Dec. 15",
+      "summary": "Ethereum core developers have rescheduled the delayed Glamsterdam testnet upgrade for the Hoodi testnet on December 15. Developers plan to ship the contested gas changes unaltered after security concerns previously halted the Hoodi fork in October.",
+      "score": 8,
+      "sentiment": 3,
+      "impact": "long_game",
+      "topics": [
+        "tech",
+        "regulation"
+      ],
+      "urls": [
+        "https://decrypt.co/384104/ethereum-sets-december-15-date-for-delayed-glamsterdam-testnet-upgrade",
+        "https://theblock.co/news/ecosystems/2026-11-27-ethereum-devs-schedule-glamsterdam-upgrade-hoodi-447051"
       ]
     }
   ]
